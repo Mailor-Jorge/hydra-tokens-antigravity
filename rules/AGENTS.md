@@ -39,12 +39,18 @@ All responses MUST follow compact output format by default:
 
 Monitor conversation context and take action before saturation occurs:
 
-1. **Turn count monitoring:** After every 10 turns, produce a one-line context status:
-   `[HYDRA] Turn 10/? | Context: ~Xk tokens | Recommend: compress at turn 15`
+1. **AUTO-COMPRESS every 10 turns (mandatory):**
+   Count conversation turns internally. At turns 10, 20, 30... automatically execute
+   the full hydra compress protocol WITHOUT waiting for user command:
+   - Generate semantic digest of conversation so far
+   - Replace raw history with the digest
+   - Report one line: `[HYDRA] Auto-compress T10 | Before: ~Xk | After: ~Yk | Saved: Z%`
+   - Then respond normally to the user's message
 
-2. **Context saturation threshold:** If context exceeds 15,000 tokens OR 20 turns,
-   automatically offer compression BEFORE responding to the next complex task:
-   `[HYDRA] Context is getting large (~Xk tokens). Run 'hydra compress' to checkpoint and continue efficiently.`
+2. **Emergency compress threshold:** If context exceeds 20,000 tokens at ANY turn,
+   trigger immediate compress BEFORE processing the next message:
+   `[HYDRA] EMERGENCY COMPRESS — context at ~Xk tokens. Compressing now...`
+   Then execute compress and continue.
 
 3. **File loading discipline:** Before reading any file, check:
    - Is this file already in context? (do not re-read)
