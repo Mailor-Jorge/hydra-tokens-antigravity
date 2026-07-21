@@ -1,11 +1,17 @@
 {
   "name": "@mailoko/hydra-tools-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Official native MCP server for HYDRA TOKENS ANTIGRAVITY. Filters log files locally, estimates token costs, and manages workspace hygiene.",
   "main": "index.js",
   "bin": {
-    "hydra-tools-mcp": "./index.js"
+    "hydra-tools-mcp": "index.js"
   },
+  "files": [
+    "index.js",
+    "README.md",
+    "hydra_mcp_server.py",
+    "hydra_tracker_config.json"
+  ],
   "scripts": {
     "start": "node index.js"
   },
