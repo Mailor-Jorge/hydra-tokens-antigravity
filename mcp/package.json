@@ -1,0 +1,30 @@
+{
+  "name": "hydra-tools-mcp",
+  "version": "1.0.0",
+  "description": "Official native MCP server for HYDRA TOKENS ANTIGRAVITY. Filters log files locally, estimates token costs, and manages workspace hygiene.",
+  "main": "index.js",
+  "bin": {
+    "hydra-tools-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mailor-Jorge/hydra-tokens-antigravity.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "antigravity",
+    "token-optimization",
+    "llm-tokens",
+    "token-saver"
+  ],
+  "author": "Mailor-Jorge",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mailor-Jorge/hydra-tokens-antigravity/issues"
+  },
+  "homepage": "https://github.com/Mailor-Jorge/hydra-tokens-antigravity#readme"
+}

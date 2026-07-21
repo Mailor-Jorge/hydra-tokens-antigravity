@@ -119,25 +119,48 @@ After installation, **restart Antigravity IDE**. The 4 skills will appear in you
 
 ## 🚀 Usage
 
-### Activate Full HYDRA Mode
-```
-/hydra
-```
-or type: `hydra on`, `economizar tokens`, `modo hydra`
+### 🗣️ A. Chat Commands & Triggers
 
-### Select Only Needed MCP Servers
-```
-hydra mcp [task description]
-```
+| Command | Action / Description |
+|---------|----------------------|
+| `hydra`, `/hydra`, `modo hydra` | Activates HYDRA orchestrator and runs **System Scan** |
+| `hydra audit`, `quanto custa` | Runs **HEAD-4 Token Auditor** (cost report + efficiency score) |
+| `hydra mcp [task]` | Runs **HEAD-2 Smart MCP Selector** (recommends minimal tools) |
+| `hydra compress`, `compactar contexto` | Forces **HEAD-3 Semantic Context Compression** immediately |
+| `hydra checkpoint` | Saves current session state to `.hydra_checkpoint.json` |
 
-### Compress Bloated Context
-```
-hydra compress
-```
+---
 
-### Audit Current Token Cost
-```
-hydra audit
+### 🛠️ B. Native MCP Server Tools (`hydra-tools-mcp`)
+
+Run directly via natural language or MCP tool calls:
+
+| Tool | Parameters | Function & Savings |
+|------|------------|--------------------|
+| `hydra_filter_log` | `file_path`, `max_lines` | Filters large logs locally on your machine, returning only error lines (**saves up to 99.8% tokens**) |
+| `hydra_token_estimate` | `file_path` | Calculates exact byte size, char count, and estimated tokens **before** loading into context |
+| `hydra_clean_scratch` | `dry_run` | Scans and cleans up temporary `.tmp`, `.log`, `.bak` files from scratch workspace |
+
+#### Natural Language Examples:
+- *"Filter errors from `C:\logs\skyrim.log`"* → Calls `hydra_filter_log`
+- *"Estimate token cost of `src/main.py`"* → Calls `hydra_token_estimate`
+- *"Clean temporary scratch files"* → Calls `hydra_clean_scratch`
+
+---
+
+### 📦 Public MCP Package Installation
+
+You can run `hydra-tools-mcp` locally or register it in any MCP-compatible environment:
+
+```json
+{
+  "mcpServers": {
+    "hydra-tools-mcp": {
+      "command": "npx",
+      "args": ["-y", "hydra-tools-mcp@latest"]
+    }
+  }
+}
 ```
 
 ---
