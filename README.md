@@ -157,10 +157,27 @@ Run directly via natural language or MCP tool calls:
 - *"Extract function OnPageReset from MyMod.psc"* → `hydra_snippet`
 - *"Cache this response about compiling Papyrus"* → `hydra_cache`
 - *"Scan the project directory for heavy files"* → `hydra_context_snapshot`
-
 ---
 
-### 📦 Public MCP Package Installation
+### 🤖 C. Automatic Behaviors (zero user input required)
+
+These actions run **automatically** during normal chat interaction — no commands needed:
+
+| When | What Happens | Triggered By |
+|------|-------------|--------------|
+| **Every 10 turns** | `hydra_compress` — compresses conversation history into a semantic digest | HEAD-6 rule |
+| **Every 15 turns** | `hydra_context_snapshot` — scans workspace and reports top 5 heaviest files | HEAD-6 rule |
+| **Every 20 turns** | Asks: *"Deseja executar `hydra_clean_scratch`?"* to clean temp files | HEAD-6 rule |
+| **When reading a file** | Asks: *"Deseja extrair apenas a função X via `hydra_snippet`?"* instead of loading the full file | HEAD-6 snippet-first rule |
+| **When topic is repeated** | Silently checks `hydra_cache` — if hit, offers cached answer (0 generation tokens) | HEAD-6 cache-check rule |
+| **When editing a file** | Shows **only the diff** (changed lines), never re-outputs the entire file | HEAD-5 diff-only mode |
+| **When opening a log file** | Asks: *"Usar `hydra_filter_log` para extrair apenas erros?"* | HEAD-2 interactive protocol |
+| **When opening a large file** | Asks: *"Rodar `hydra_token_estimate` primeiro?"* to check token cost before loading | HEAD-2 interactive protocol |
+| **Context > 20k tokens** | Emergency compress — immediate context reduction before processing next message | HEAD-6 emergency threshold |
+
+> **Note:** All "Asks" prompts can be answered with yes/no. If you say yes, HYDRA runs the tool automatically. If no, it proceeds normally.
+
+---
 
 You can run `@mailoko/hydra-tools-mcp` locally or register it in any MCP-compatible environment:
 
