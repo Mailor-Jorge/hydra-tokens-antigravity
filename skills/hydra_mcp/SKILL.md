@@ -119,6 +119,22 @@ When an MCP tool returns a large response:
 
 ---
 
+## Interactive User Confirmation Protocol
+
+Whenever the user asks to analyze a log file, inspect a potentially large file, or do workspace cleanup:
+**DO NOT read the raw file immediately.** Ask the user if they want to use a HYDRA MCP tool first:
+
+1. **Log Analysis:**
+   > *"Detectei o arquivo `[filename.log]`. Deseja usar `hydra_filter_log` para extrair apenas as linhas de erro locais (economizando ~99% de tokens) antes de abrir o arquivo inteiro?"*
+
+2. **Large File Inspection:**
+   > *"O arquivo `[filename.ext]` pode consumir muitos tokens. Deseja rodar `hydra_token_estimate` primeiro para ver a estimativa de custo de tokens e tamanho em KB?"*
+
+3. **Workspace Cleanup:**
+   > *"Deseja executar `hydra_clean_scratch` para listar/limpar arquivos temporários `.tmp`, `.log` e `.bak` do workspace?"*
+
+---
+
 ## Quick Commands
 
 ```
