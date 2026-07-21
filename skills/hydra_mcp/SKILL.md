@@ -133,12 +133,34 @@ Whenever the user asks to analyze a log file, inspect a potentially large file, 
 3. **Workspace Cleanup:**
    > *"Deseja executar `hydra_clean_scratch` para listar/limpar arquivos temporários `.tmp`, `.log` e `.bak` do workspace?"*
 
+4. **Function/Block Reading (AUTOMATIC):**
+   When user asks to read or analyze a specific function/class/event in a file:
+   > *"Deseja que eu extraia apenas a função `[symbol]` via `hydra_snippet` em vez de carregar o arquivo inteiro (~X tokens)?"*
+
+5. **Repeated Topic Detection (AUTOMATIC):**
+   When user asks about a topic that may have been answered before:
+   - Silently check `hydra_cache(action='get', key='topic')` first.
+   - If cache hit: *"Encontrei uma resposta cacheada para este tópico. Deseja usar o cache (0 tokens de geração) ou gerar uma resposta nova?"*
+   - If cache miss: generate normally, then offer to cache: *"Deseja salvar esta resposta no cache para reutilização futura?"*
+
+6. **Directory Analysis (AUTOMATIC at turn 15, 30, 45...):**
+   Run `hydra_context_snapshot` on the active workspace and report top 5 heaviest files.
+
 ---
 
 ## Quick Commands
 
 ```
-hydra mcp off          → Suggest disabling all non-essential MCP servers
-hydra mcp report       → Show estimated token cost of all currently loaded MCPs
-hydra mcp task: [desc] → Get MCP recommendation for specific task description
+hydra mcp off              → Suggest disabling all non-essential MCP servers
+hydra mcp report           → Show estimated token cost of all currently loaded MCPs
+hydra mcp task: [desc]     → Get MCP recommendation for specific task description
+hydra snippet [file] [sym] → Extract only a specific function/class from file
+hydra cache list           → List all cached responses
+hydra cache save [key]     → Save current response to cache
+hydra cache get [key]      → Retrieve cached response (0 generation tokens)
+hydra snapshot [dir]       → Scan directory and report token costs per file
+hydra limit N              → Cap response output to ~N tokens
+hydra limit off            → Remove output token limit
+hydra diff on/off          → Toggle diff-only mode for file edits (default: ON)
 ```
+
