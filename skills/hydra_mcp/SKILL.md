@@ -143,8 +143,17 @@ Whenever the user asks to analyze a log file, inspect a potentially large file, 
    - If cache hit: *"Encontrei uma resposta cacheada para este tópico. Deseja usar o cache (0 tokens de geração) ou gerar uma resposta nova?"*
    - If cache miss: generate normally, then offer to cache: *"Deseja salvar esta resposta no cache para reutilização futura?"*
 
-6. **Directory Analysis (AUTOMATIC at turn 15, 30, 45...):**
-   Run `hydra_context_snapshot` on the active workspace and report top 5 heaviest files.
+7. **Dependency Trace (AUTOMATIC before editing a symbol):**
+   Before modifying a function, class, or event:
+   > *"Vou editar a função `[symbol]`. Deseja executar `hydra_dependency_trace` primeiro para verificar se outras partes do código dependem dela e evitar quebras?"*
+
+8. **Post-Edit Verification (AUTOMATIC after editing a file):**
+   After making edits to any code file:
+   > *"Editei o arquivo `[filename]`. Deseja executar `hydra_edit_verify` para verificar se há erros de sintaxe ou blocos não fechados?"*
+
+9. **File Hash Re-read Prevention (AUTOMATIC before re-reading):**
+   Before loading a file that was previously read in context:
+   > *"Deseja verificar via `hydra_file_hash` se `[filename]` realmente mudou antes de reler (~X tokens)?"*
 
 ---
 
@@ -155,9 +164,10 @@ hydra mcp off              → Suggest disabling all non-essential MCP servers
 hydra mcp report           → Show estimated token cost of all currently loaded MCPs
 hydra mcp task: [desc]     → Get MCP recommendation for specific task description
 hydra snippet [file] [sym] → Extract only a specific function/class from file
-hydra cache list           → List all cached responses
-hydra cache save [key]     → Save current response to cache
-hydra cache get [key]      → Retrieve cached response (0 generation tokens)
+hydra trace [file] [sym]   → Trace callers/dependencies of symbol across project
+hydra verify [file]        → Run post-edit syntax check on file
+hydra hash [file]          → Check if file content changed (MD5)
+hydra cache list/save/get  → Manage response cache
 hydra snapshot [dir]       → Scan directory and report token costs per file
 hydra limit N              → Cap response output to ~N tokens
 hydra limit off            → Remove output token limit

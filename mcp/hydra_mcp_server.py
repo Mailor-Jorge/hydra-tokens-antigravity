@@ -2,7 +2,7 @@
 """
 HYDRA TOKENS ANTIGRAVITY — Custom Stdio MCP Server (HEAD-8)
 Pure Python JSON-RPC MCP Server implementation. Zero external dependencies.
-v1.1.0 — Added: hydra_snippet, hydra_cache, hydra_context_snapshot
+v1.2.0 — Added: hydra_dependency_trace, hydra_edit_verify, hydra_file_hash
 """
 
 import sys
@@ -10,11 +10,15 @@ import json
 import os
 import re
 import time
+import hashlib
+import py_compile
 
 SERVER_NAME = "hydra-tools-mcp"
-SERVER_VERSION = "1.1.0"
+SERVER_VERSION = "1.2.0"
 
-CACHE_FILE = os.path.join(os.environ.get("USERPROFILE", os.environ.get("HOME", "")), ".gemini", "antigravity", "hydra_cache.json")
+BASE_DIR = os.path.join(os.environ.get("USERPROFILE", os.environ.get("HOME", "")), ".gemini", "antigravity")
+CACHE_FILE = os.path.join(BASE_DIR, "hydra_cache.json")
+HASH_FILE = os.path.join(BASE_DIR, "hydra_file_hashes.json")
 
 TOOLS = [
     {
@@ -88,6 +92,43 @@ TOOLS = [
             },
             "required": ["directory"]
         }
+    },
+    {
+        "name": "hydra_dependency_trace",
+        "description": "Trace call dependencies for a function/symbol across project files to prevent breaking changes during edits.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file_path": {"type": "string", "description": "Absolute path to the file containing the symbol"},
+                "symbol": {"type": "string", "description": "Name of the function, event, or class to trace"},
+                "search_dir": {"type": "string", "description": "Directory to search for callers/dependencies (optional, defaults to parent dir)"}
+            },
+            "required": ["file_path", "symbol"]
+        }
+    },
+    {
+        "name": "hydra_edit_verify",
+        "description": "Run post-edit syntax and structure verification on a file to ensure no syntax errors were introduced.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file_path": {"type": "string", "description": "Absolute path to the edited file"},
+                "language": {"type": "string", "description": "Language hint (e.g. 'papyrus', 'python', 'json', 'javascript')"}
+            },
+            "required": ["file_path"]
+        }
+    },
+    {
+        "name": "hydra_file_hash",
+        "description": "Check if a file content has changed (MD5 hash) since last read to avoid re-reading identical files into context.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file_path": {"type": "string", "description": "Absolute path to the file"},
+                "action": {"type": "string", "enum": ["check", "clear"], "description": "'check' to compare hash, 'clear' to reset stored hash"}
+            },
+            "required": ["file_path"]
+        }
     }
 ]
 
@@ -134,7 +175,7 @@ def handle_token_estimate(file_path):
         return f"Error analyzing file: {str(e)}"
 
 def handle_clean_scratch(dry_run=True):
-    scratch_dir = os.path.join(os.environ.get("USERPROFILE", os.environ.get("HOME", "")), ".gemini", "antigravity", "scratch")
+    scratch_dir = os.path.join(BASE_DIR, "scratch")
     if not os.path.exists(scratch_dir):
         return "Scratch directory not found."
     cleaned = []
@@ -162,13 +203,12 @@ def handle_snippet(file_path, symbol, context_lines=2):
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
         total = len(lines)
-        # Patterns for common code constructs
         patterns = [
             re.compile(rf'^\s*(def|function|func|fn|sub|proc)\s+{re.escape(symbol)}\s*[\(:]', re.IGNORECASE),
             re.compile(rf'^\s*(class|struct|interface|enum)\s+{re.escape(symbol)}[\s\(:\{{]', re.IGNORECASE),
-            re.compile(rf'^\s*(Event|Function|State)\s+{re.escape(symbol)}\s*[\(]', re.IGNORECASE),  # Papyrus
+            re.compile(rf'^\s*(Event|Function|State)\s+{re.escape(symbol)}\s*[\(]', re.IGNORECASE),
             re.compile(rf'^\s*(async\s+)?(def|function)\s+{re.escape(symbol)}\s*[\(]', re.IGNORECASE),
-            re.compile(rf'{re.escape(symbol)}\s*[:=]\s*(function|class|\()', re.IGNORECASE),  # JS/TS
+            re.compile(rf'{re.escape(symbol)}\s*[:=]\s*(function|class|\()', re.IGNORECASE),
         ]
         start_idx = None
         for i, line in enumerate(lines):
@@ -179,14 +219,12 @@ def handle_snippet(file_path, symbol, context_lines=2):
             if start_idx is not None:
                 break
         if start_idx is None:
-            # Fallback: simple text search
             for i, line in enumerate(lines):
                 if symbol.lower() in line.lower():
                     start_idx = i
                     break
         if start_idx is None:
             return f"[HYDRA SNIPPET] Symbol '{symbol}' not found in {os.path.basename(file_path)} ({total} lines)"
-        # Find end of block by indentation
         base_indent = len(lines[start_idx]) - len(lines[start_idx].lstrip())
         end_idx = start_idx + 1
         while end_idx < total:
@@ -197,12 +235,10 @@ def handle_snippet(file_path, symbol, context_lines=2):
                 continue
             current_indent = len(line) - len(line.lstrip())
             if current_indent <= base_indent and stripped and end_idx > start_idx + 1:
-                # Check for Papyrus EndFunction/EndEvent/EndState
                 if stripped.lower().startswith(('endfunction', 'endevent', 'endstate', 'endif')):
                     end_idx += 1
                 break
             end_idx += 1
-        # Apply context
         real_start = max(0, start_idx - context_lines)
         real_end = min(total, end_idx + context_lines)
         snippet_lines = []
@@ -217,27 +253,27 @@ def handle_snippet(file_path, symbol, context_lines=2):
     except Exception as e:
         return f"Error extracting snippet: {str(e)}"
 
-def _load_cache():
-    if os.path.exists(CACHE_FILE):
+def _load_json(file_path):
+    if os.path.exists(file_path):
         try:
-            with open(CACHE_FILE, 'r', encoding='utf-8') as f:
+            with open(file_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except:
             return {}
     return {}
 
-def _save_cache(data):
-    os.makedirs(os.path.dirname(CACHE_FILE), exist_ok=True)
-    with open(CACHE_FILE, 'w', encoding='utf-8') as f:
+def _save_json(file_path, data):
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def handle_cache(action, key=None, value=None):
-    cache = _load_cache()
+    cache = _load_json(CACHE_FILE)
     if action == "save":
         if not key or not value:
             return "Error: 'key' and 'value' required for save action."
         cache[key] = {"value": value, "saved_at": time.strftime("%Y-%m-%d %H:%M")}
-        _save_cache(cache)
+        _save_json(CACHE_FILE, cache)
         est_tokens = int(len(value) / 4)
         return f"[HYDRA CACHE] Saved '{key}' (~{est_tokens} tokens cached). Next time this topic comes up, retrieval costs 0 generation tokens."
     elif action == "get":
@@ -246,7 +282,6 @@ def handle_cache(action, key=None, value=None):
         if key in cache:
             entry = cache[key]
             return f"[HYDRA CACHE HIT] '{key}' (saved {entry['saved_at']})\n" + "-"*50 + "\n" + entry["value"]
-        # Fuzzy match
         for k in cache:
             if key.lower() in k.lower() or k.lower() in key.lower():
                 entry = cache[k]
@@ -265,7 +300,7 @@ def handle_cache(action, key=None, value=None):
             return "Error: 'key' required for delete action."
         if key in cache:
             del cache[key]
-            _save_cache(cache)
+            _save_json(CACHE_FILE, cache)
             return f"[HYDRA CACHE] Deleted '{key}'."
         return f"[HYDRA CACHE] Key '{key}' not found."
     return f"Error: Unknown action '{action}'"
@@ -293,7 +328,7 @@ def handle_context_snapshot(directory, max_depth=2, extensions=None):
                     continue
                 try:
                     sz = os.path.getsize(fp)
-                    if sz > 500000:  # Skip files > 500KB
+                    if sz > 500000:
                         continue
                     est = int(sz / 4)
                     rel = os.path.relpath(fp, directory)
@@ -301,9 +336,8 @@ def handle_context_snapshot(directory, max_depth=2, extensions=None):
                     total_tokens += est
                 except:
                     pass
-        files_data.sort(key=lambda x: -x[2])  # Sort by tokens desc
+        files_data.sort(key=lambda x: -x[2])
         lines = [f"[HYDRA CONTEXT SNAPSHOT] {directory}", f"  Total files: {len(files_data)} | Total est. tokens: ~{total_tokens:,}", "-"*60]
-        # Top 15 heaviest files
         for rel, sz, est in files_data[:15]:
             status = "OK" if est < 3000 else "HEAVY"
             lines.append(f"  [{status:5s}] {rel:45s} {sz/1024:7.1f} KB  ~{est:,} tok")
@@ -312,6 +346,128 @@ def handle_context_snapshot(directory, max_depth=2, extensions=None):
         return "\n".join(lines)
     except Exception as e:
         return f"Error scanning directory: {str(e)}"
+
+def handle_dependency_trace(file_path, symbol, search_dir=None):
+    if not os.path.exists(file_path):
+        return f"Error: File not found: {file_path}"
+    target_dir = search_dir if search_dir and os.path.exists(search_dir) else os.path.dirname(file_path)
+    if not target_dir:
+        target_dir = "."
+    callers = []
+    try:
+        pattern = re.compile(rf'\b{re.escape(symbol)}\b')
+        target_file_name = os.path.basename(file_path)
+        for root, dirs, files in os.walk(target_dir):
+            for f in files:
+                if f.endswith(('.psc', '.py', '.js', '.ts', '.c', '.cpp', '.h', '.java')):
+                    fp = os.path.join(root, f)
+                    try:
+                        with open(fp, 'r', encoding='utf-8', errors='ignore') as file_obj:
+                            for idx, line in enumerate(file_obj, 1):
+                                if pattern.search(line):
+                                    rel = os.path.relpath(fp, target_dir)
+                                    callers.append(f"  ← {rel}:L{idx} | {line.strip()[:80]}")
+                    except:
+                        pass
+        callers_str = "\n".join(callers[:15]) if callers else "  (No external references found)"
+        total_refs = len(callers)
+        warn = "⚠️ WARNING: Multiple files depend on this symbol. Exercise caution during edits!" if total_refs > 2 else "✅ LOW RISK: Few references found."
+        return (f"[HYDRA DEPENDENCY TRACE] Symbol '{symbol}' in {target_file_name}\n"
+                f"  Search Dir: {target_dir} | Total References Found: {total_refs}\n"
+                f"  Risk Status: {warn}\n"
+                f"  References:\n{callers_str}")
+    except Exception as e:
+        return f"Error tracing dependencies: {str(e)}"
+
+def handle_edit_verify(file_path, language=None):
+    if not os.path.exists(file_path):
+        return f"Error: File not found: {file_path}"
+    ext = os.path.splitext(file_path)[1].lower()
+    filename = os.path.basename(file_path)
+    errors = []
+    try:
+        if ext == '.py' or language == 'python':
+            try:
+                py_compile.compile(file_path, doraise=True)
+            except py_compile.PyCompileError as pe:
+                errors.append(f"Python Syntax Error: {pe.msg}")
+        elif ext == '.json' or language == 'json':
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                try:
+                    json.load(f)
+                except json.JSONDecodeError as jde:
+                    errors.append(f"JSON Syntax Error L{jde.lineno} C{jde.colno}: {jde.msg}")
+        elif ext == '.psc' or language == 'papyrus':
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                lines = f.readlines()
+            open_functions = 0
+            open_events = 0
+            open_states = 0
+            for idx, line in enumerate(lines, 1):
+                st = line.strip().lower()
+                if st.startswith(('function ', 'event ', 'state ')) and not st.endswith(('endfunction', 'endevent', 'endstate')):
+                    if st.startswith('function '): open_functions += 1
+                    if st.startswith('event '): open_events += 1
+                    if st.startswith('state '): open_states += 1
+                if st == 'endfunction': open_functions = max(0, open_functions - 1)
+                if st == 'endevent': open_events = max(0, open_events - 1)
+                if st == 'endstate': open_states = max(0, open_states - 1)
+                # Unmatched quotes check
+                if line.count('"') % 2 != 0 and not line.strip().startswith(';'):
+                    errors.append(f"L{idx}: Unmatched quote (\") in line: {line.strip()[:60]}")
+            if open_functions > 0: errors.append(f"Missing EndFunction block ({open_functions} unclosed)")
+            if open_events > 0: errors.append(f"Missing EndEvent block ({open_events} unclosed)")
+            if open_states > 0: errors.append(f"Missing EndState block ({open_states} unclosed)")
+        else:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                lines = f.readlines()
+            # Generic parenthesis balance check
+            open_p = 0
+            for idx, line in enumerate(lines, 1):
+                if line.strip().startswith(('//', '#', ';')): continue
+                open_p += line.count('(') - line.count(')')
+            if open_p != 0:
+                errors.append(f"Generic syntax warning: Unbalanced parentheses count ({open_p}) across file")
+
+        if not errors:
+            return f"[HYDRA VERIFY] ✅ PASS — {filename}\n  Zero syntax/structure errors detected after edit."
+        else:
+            err_str = "\n".join(f"  ❌ {e}" for e in errors)
+            return f"[HYDRA VERIFY] ❌ FAIL — {filename}\n  {len(errors)} potential error(s) found:\n{err_str}"
+    except Exception as e:
+        return f"Error verifying file: {str(e)}"
+
+def handle_file_hash(file_path, action="check"):
+    if not os.path.exists(file_path):
+        return f"Error: File not found: {file_path}"
+    try:
+        hashes = _load_json(HASH_FILE)
+        filename = os.path.basename(file_path)
+        with open(file_path, 'rb') as f:
+            curr_hash = hashlib.md5(f.read()).hexdigest()
+        if action == "clear":
+            if file_path in hashes:
+                del hashes[file_path]
+                _save_json(HASH_FILE, hashes)
+            return f"[HYDRA HASH] Cleared hash history for {filename}."
+        prev_hash = hashes.get(file_path, {}).get("hash")
+        prev_time = hashes.get(file_path, {}).get("updated_at", "never")
+        if prev_hash == curr_hash:
+            est_tokens = int(os.path.getsize(file_path) / 4)
+            return (f"[HYDRA HASH] {filename}\n"
+                    f"  Current MD5 : {curr_hash[:8]}...\n"
+                    f"  Status      : UNCHANGED (Last read: {prev_time})\n"
+                    f"  Recommendation: SKIP RELOAD — File content has not changed. Saved ~{est_tokens:,} tokens!")
+        else:
+            hashes[file_path] = {"hash": curr_hash, "updated_at": time.strftime("%Y-%m-%d %H:%M")}
+            _save_json(HASH_FILE, hashes)
+            status_msg = "NEW FILE (First read)" if not prev_hash else f"CHANGED (Modified since {prev_time})"
+            return (f"[HYDRA HASH] {filename}\n"
+                    f"  Current MD5 : {curr_hash[:8]}...\n"
+                    f"  Status      : {status_msg}\n"
+                    f"  Recommendation: RELOAD REQUIRED — Load new content into context.")
+    except Exception as e:
+        return f"Error hashing file: {str(e)}"
 
 def respond(response_dict):
     msg = json.dumps(response_dict)
@@ -357,6 +513,12 @@ def main():
                     res_text = handle_cache(args.get("action", ""), args.get("key"), args.get("value"))
                 elif name == "hydra_context_snapshot":
                     res_text = handle_context_snapshot(args.get("directory", ""), args.get("max_depth", 2), args.get("extensions"))
+                elif name == "hydra_dependency_trace":
+                    res_text = handle_dependency_trace(args.get("file_path", ""), args.get("symbol", ""), args.get("search_dir"))
+                elif name == "hydra_edit_verify":
+                    res_text = handle_edit_verify(args.get("file_path", ""), args.get("language"))
+                elif name == "hydra_file_hash":
+                    res_text = handle_file_hash(args.get("file_path", ""), args.get("action", "check"))
                 else:
                     res_text = f"Unknown tool: {name}"
                 respond({"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": res_text}]}})

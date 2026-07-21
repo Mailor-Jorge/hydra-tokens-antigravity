@@ -15,50 +15,52 @@
 
 ---
 
-## 🛠️ Available Tools (6)
+## 🛠️ Available Tools (9)
 
 ### 1. `hydra_filter_log`
 Filters large log files locally in milliseconds, returning ONLY matching error/warning lines.
-- **Inputs:**
-  - `file_path` (string, required): Absolute path to the log file.
-  - `max_lines` (number, optional): Max error lines to return (default: `50`).
+- **Inputs:** `file_path`, `max_lines` (optional, default: `50`).
 - **Impact:** Up to **99.8%** token reduction on log inspection.
 
 ### 2. `hydra_token_estimate`
 Calculates file size, character count, and estimated tokens **before** loading a file into context.
-- **Inputs:**
-  - `file_path` (string, required): Absolute path to the file.
+- **Inputs:** `file_path`.
 - **Impact:** Prevents accidental context bloat from opening massive files.
 
 ### 3. `hydra_clean_scratch`
 Scans and cleans up temporary `.tmp`, `.log`, and `.bak` files from the scratch directory.
-- **Inputs:**
-  - `dry_run` (boolean, optional): If `true`, only reports files without deleting (default: `true`).
+- **Inputs:** `dry_run` (boolean, optional, default: `true`).
 - **Impact:** Keeps workspace clean and light.
 
 ### 4. `hydra_snippet`
 Extracts only a specific function, class, or code block from a file by name.
-- **Inputs:**
-  - `file_path` (string, required): Absolute path to the source file.
-  - `symbol` (string, required): Name of function, class, event, or state to extract.
-  - `context_lines` (number, optional): Extra lines of context above/below (default: `2`).
+- **Inputs:** `file_path`, `symbol`, `context_lines` (optional, default: `2`).
 - **Impact:** Up to **90%** token reduction on file reads.
 
 ### 5. `hydra_cache`
 Saves, retrieves, or lists cached responses to avoid regenerating repeated answers.
-- **Inputs:**
-  - `action` (string, required): `"save"`, `"get"`, `"list"`, or `"delete"`.
-  - `key` (string, optional): Cache key or question topic.
-  - `value` (string, optional): Content to cache (required for `"save"`).
+- **Inputs:** `action` (`save`/`get`/`list`/`delete`), `key`, `value`.
 - **Impact:** **100%** reduction on repeated questions (0 generation tokens).
 
 ### 6. `hydra_context_snapshot`
 Scans a directory and reports estimated token costs per file, sorted by heaviest.
-- **Inputs:**
-  - `directory` (string, required): Absolute path to directory to scan.
-  - `max_depth` (number, optional): Max directory depth (default: `2`).
-  - `extensions` (string, optional): Comma-separated extension filter (e.g. `".py,.md,.psc"`).
+- **Inputs:** `directory`, `max_depth` (optional), `extensions` (optional).
 - **Impact:** Identifies heavy files before loading.
+
+### 7. `hydra_dependency_trace`
+Traces call references for a function/symbol across project files to prevent breaking changes during edits.
+- **Inputs:** `file_path`, `symbol`, `search_dir` (optional).
+- **Impact:** Prevents broken code & saves multi-file debugging cycles.
+
+### 8. `hydra_edit_verify`
+Runs post-edit syntax & structure verification on a file to ensure no syntax errors were introduced.
+- **Inputs:** `file_path`, `language` (optional).
+- **Impact:** Catch syntax/structural errors before testing.
+
+### 9. `hydra_file_hash`
+Checks if a file's MD5 hash changed since last read to avoid re-reading identical files.
+- **Inputs:** `file_path`, `action` (`check`/`clear`).
+- **Impact:** **100%** token savings on un-modified file reads.
 
 ---
 

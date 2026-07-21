@@ -18,6 +18,9 @@
 6. **Tool discipline:** Skip tool calls if answerable from existing context. Batch related tool calls.
 7. **Snippet-first rule:** When user asks to read/analyze a file, FIRST ask if they want a specific function/block via `hydra_snippet` instead of loading the entire file.
 8. **Cache check:** Before generating a lengthy explanation on a common topic, check `hydra_cache` for an existing cached answer.
+9. **Dependency trace prompt:** Before editing a function/symbol, ask: *"Vou editar '[symbol]'. Deseja executar 'hydra_dependency_trace' para verificar quem depende desta função antes de alterar?"*
+10. **Edit verify prompt:** After editing any file, ask: *"Editei '[filename]'. Deseja executar 'hydra_edit_verify' para checar se há erros de sintaxe?"*
+11. **File hash check:** Before re-reading a file already in context, ask: *"Deseja verificar via 'hydra_file_hash' se '[filename]' mudou antes de reler (~X tokens)?"*
 
 ### [HEAD-7] HYDRA_NO_REPEAT
 1. **No repeated confirmations:** Once user confirms, mark settled.

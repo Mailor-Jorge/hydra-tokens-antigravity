@@ -1,7 +1,7 @@
 {
   "name": "@mailoko/hydra-tools-mcp",
-  "version": "1.1.1",
-  "description": "Official MCP server for HYDRA TOKENS ANTIGRAVITY. 6 tools: filter_log, token_estimate, clean_scratch, snippet, cache, context_snapshot.",
+  "version": "1.2.0",
+  "description": "Official MCP server for HYDRA TOKENS ANTIGRAVITY. 9 tools: filter_log, token_estimate, clean_scratch, snippet, cache, context_snapshot, dependency_trace, edit_verify, file_hash.",
   "main": "index.js",
   "bin": {
     "hydra-tools-mcp": "index.js"

@@ -5,9 +5,9 @@
 ![HYDRA Banner](https://img.shields.io/badge/HYDRA-TOKENS%20ANTIGRAVITY-6B21A8?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Google%20Antigravity-4F46E5?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.1.0-F59E0B?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.2.0-F59E0B?style=for-the-badge)
 ![Skills](https://img.shields.io/badge/Skills-4%20Heads-EC4899?style=for-the-badge)
-![MCP Tools](https://img.shields.io/badge/MCP%20Tools-6-06B6D4?style=for-the-badge)
+![MCP Tools](https://img.shields.io/badge/MCP%20Tools-9-06B6D4?style=for-the-badge)
 
 **A modular token-saving system for Google Antigravity IDE.**  
 *Cut AI API costs by up to 90% using Skills, Rules, Agents and MCP — the 9-headed HYDRA approach.*
@@ -130,6 +130,9 @@ After installation, **restart Antigravity IDE**. The 4 skills will appear in you
 | `hydra compress`, `compactar contexto` | Forces **HEAD-3 Semantic Context Compression** immediately |
 | `hydra checkpoint` | Saves current session state to `.hydra_checkpoint.json` |
 | `hydra snippet [file] [sym]` | Extracts only a specific function/class from a file |
+| `hydra trace [file] [sym]` | Traces callers/dependencies of a symbol across project |
+| `hydra verify [file]` | Runs post-edit syntax check on file |
+| `hydra hash [file]` | Checks if file content changed (MD5 hash) |
 | `hydra cache list/save/get` | Manages response cache (save, retrieve, list) |
 | `hydra snapshot [dir]` | Scans directory and reports token costs per file |
 | `hydra limit N` | Caps response output to ~N tokens |
@@ -138,7 +141,7 @@ After installation, **restart Antigravity IDE**. The 4 skills will appear in you
 
 ---
 
-### 🛠️ B. Native MCP Server Tools (`hydra-tools-mcp`) — 6 Tools
+### 🛠️ B. Native MCP Server Tools (`hydra-tools-mcp`) — 9 Tools
 
 Run directly via natural language or MCP tool calls:
 
@@ -150,11 +153,17 @@ Run directly via natural language or MCP tool calls:
 | `hydra_snippet` | `file_path`, `symbol` | Extracts a single function/class from file (**-90% tokens**) |
 | `hydra_cache` | `action`, `key`, `value` | Saves/retrieves repeated responses (**-100% on repeats**) |
 | `hydra_context_snapshot` | `directory`, `max_depth` | Scans dir and reports token cost per file |
+| `hydra_dependency_trace` | `file_path`, `symbol` | Traces callers/dependencies to prevent breaking changes |
+| `hydra_edit_verify` | `file_path`, `language` | Post-edit syntax & structure verification |
+| `hydra_file_hash` | `file_path`, `action` | Checks MD5 hash to skip re-reading identical files (**-100%**) |
 
 #### Natural Language Examples:
 - *"Filter errors from `skyrim.log`"* → `hydra_filter_log`
 - *"Estimate token cost of `main.py`"* → `hydra_token_estimate`
 - *"Extract function OnPageReset from MyMod.psc"* → `hydra_snippet`
+- *"Trace callers of ApplySettings"* → `hydra_dependency_trace`
+- *"Verify syntax of MCM_Menu.psc"* → `hydra_edit_verify`
+- *"Check if main.py changed"* → `hydra_file_hash`
 - *"Cache this response about compiling Papyrus"* → `hydra_cache`
 - *"Scan the project directory for heavy files"* → `hydra_context_snapshot`
 ---
@@ -169,6 +178,9 @@ These actions run **automatically** during normal chat interaction — no comman
 | **Every 15 turns** | `hydra_context_snapshot` — scans workspace and reports top 5 heaviest files | HEAD-6 rule |
 | **Every 20 turns** | Asks: *"Deseja executar `hydra_clean_scratch`?"* to clean temp files | HEAD-6 rule |
 | **When reading a file** | Asks: *"Deseja extrair apenas a função X via `hydra_snippet`?"* instead of loading the full file | HEAD-6 snippet-first rule |
+| **When re-reading a file** | Asks: *"Deseja checar via `hydra_file_hash` se o arquivo mudou antes de reler?"* | HEAD-6 file-hash rule |
+| **Before editing a function** | Asks: *"Deseja rodar `hydra_dependency_trace` para verificar quem depende desta função?"* | HEAD-6 trace rule |
+| **After editing a file** | Asks: *"Deseja rodar `hydra_edit_verify` para verificar se há erros de sintaxe?"* | HEAD-6 verify rule |
 | **When topic is repeated** | Silently checks `hydra_cache` — if hit, offers cached answer (0 generation tokens) | HEAD-6 cache-check rule |
 | **When editing a file** | Shows **only the diff** (changed lines), never re-outputs the entire file | HEAD-5 diff-only mode |
 | **When opening a log file** | Asks: *"Usar `hydra_filter_log` para extrair apenas erros?"* | HEAD-2 interactive protocol |
