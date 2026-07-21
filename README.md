@@ -1,0 +1,248 @@
+# 🐍 HYDRA TOKENS ANTIGRAVITY
+
+<div align="center">
+
+![HYDRA Banner](https://img.shields.io/badge/HYDRA-TOKENS%20ANTIGRAVITY-6B21A8?style=for-the-badge&logo=googlegemini&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Google%20Antigravity-4F46E5?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.0.0-F59E0B?style=for-the-badge)
+![Skills](https://img.shields.io/badge/Skills-4%20Heads-EC4899?style=for-the-badge)
+
+**A modular token-saving system for Google Antigravity IDE.**  
+*Cut AI API costs by up to 90% using Skills, Rules, Agents and MCP — the 9-headed HYDRA approach.*
+
+[📦 Install](#-installation) · [📖 Docs](#-architecture) · [🧪 Examples](#-examples) · [🤝 Contribute](#-contributing)
+
+</div>
+
+---
+
+## ⚡ What is HYDRA?
+
+**HYDRA TOKENS ANTIGRAVITY** is a framework of modular Skills, Rules, and MCP configurations designed to **dramatically reduce token consumption** when working with AI agents in the Google Antigravity IDE.
+
+Inspired by the mythological Hydra — where cutting one head makes two grow — this system attacks token waste from **9 different angles (heads)** simultaneously. Each head is an independent, composable module:
+
+| Head | Module | Type | Savings Potential |
+|------|--------|------|-------------------|
+| 🐍 HEAD-1 | `hydra` | **Skill** | Orchestrator — activates full system |
+| 🔌 HEAD-2 | `hydra_mcp` | **Skill** | Smart MCP selector (up to -96% input tokens) |
+| 🗜️ HEAD-3 | `hydra_compress` | **Skill** | Semantic context compressor |
+| 🔍 HEAD-4 | `hydra_audit` | **Skill** | Token cost auditor |
+| 📐 HEAD-5 | `HYDRA_OUTPUT_FORMAT` | **Rule** | Compact output format enforcer |
+| 🛡️ HEAD-6 | `HYDRA_CONTEXT_GUARD` | **Rule** | Context saturation monitor |
+| 🚫 HEAD-7 | `HYDRA_NO_REPEAT` | **Rule** | Anti-repetition guard |
+| 📊 HEAD-8 | `hydra_tracker` | **MCP Config** | Session token usage tracker |
+| 🤖 HEAD-9 | `hydra_agent` | **Agent Template** | Minimal system prompt agent |
+
+---
+
+## 📊 Research-Backed Impact
+
+Based on findings from Reddit, GitHub, Medium, machinelearningmastery.com and official AI provider documentation:
+
+| Technique | Source | Potential Savings |
+|-----------|--------|------------------|
+| Dynamic MCP tool loading | Maxim AI Research | **Up to 96%** of input tokens |
+| Prompt caching (static system prompts) | Anthropic / OpenAI docs | **80–90%** on repeated tokens |
+| Semantic context compression | Microsoft LLMLingua | **20–80%** reduction |
+| Model routing (simple → small model) | Industry benchmark 2025 | **40–70%** cost savings |
+| Semantic output caching | Vector DB research | **15–88%** API call reduction |
+| Manual prompt optimization | General engineering | **20–50%** reduction |
+
+---
+
+## 📁 Project Structure
+
+```
+hydra-tokens-antigravity/
+├── README.md                          # This file
+├── HYDRA_ARCHITECTURE.md             # Technical architecture diagram
+├── INSTALL.md                         # Installation guide
+│
+├── skills/
+│   ├── hydra/SKILL.md                # HEAD-1: Main orchestrator skill
+│   ├── hydra_mcp/SKILL.md            # HEAD-2: MCP smart selector skill
+│   ├── hydra_compress/SKILL.md       # HEAD-3: Context compressor skill
+│   └── hydra_audit/SKILL.md          # HEAD-4: Token audit skill
+│
+├── rules/
+│   └── AGENTS.md                      # HEAD-5,6,7: Global HYDRA rules
+│
+├── mcp/
+│   └── hydra_tracker_config.json     # HEAD-8: Token tracker MCP config
+│
+├── agents/
+│   └── hydra_agent_template.md       # HEAD-9: Optimized agent template
+│
+└── examples/
+    ├── hydra_basic/                   # Basic HYDRA usage
+    ├── hydra_mcp_select/              # MCP selection example
+    └── hydra_compress_demo/           # Context compression demo
+```
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Google Antigravity IDE installed
+- Access to `~/.gemini/config/` directory
+
+### Quick Install (4 skills + rules)
+
+```powershell
+# Clone the repository
+git clone https://github.com/Mailor-Jorge/hydra-tokens-antigravity.git
+cd hydra-tokens-antigravity
+
+# Run the installer script
+.\install.ps1
+```
+
+### Manual Install
+
+```powershell
+# 1. Copy skills to Antigravity config
+Copy-Item -Recurse skills\hydra     "$env:USERPROFILE\.gemini\config\skills\hydra"
+Copy-Item -Recurse skills\hydra_mcp "$env:USERPROFILE\.gemini\config\skills\hydra_mcp"
+Copy-Item -Recurse skills\hydra_compress "$env:USERPROFILE\.gemini\config\skills\hydra_compress"
+Copy-Item -Recurse skills\hydra_audit "$env:USERPROFILE\.gemini\config\skills\hydra_audit"
+
+# 2. Append rules to your global AGENTS.md
+Add-Content "$env:USERPROFILE\.gemini\config\AGENTS.md" (Get-Content rules\AGENTS.md -Raw)
+```
+
+After installation, **restart Antigravity IDE**. The 4 skills will appear in your Customizations panel.
+
+---
+
+## 🚀 Usage
+
+### Activate Full HYDRA Mode
+```
+/hydra
+```
+or type: `hydra on`, `economizar tokens`, `modo hydra`
+
+### Select Only Needed MCP Servers
+```
+hydra mcp [task description]
+```
+
+### Compress Bloated Context
+```
+hydra compress
+```
+
+### Audit Current Token Cost
+```
+hydra audit
+```
+
+---
+
+## 🏗️ Architecture
+
+See [HYDRA_ARCHITECTURE.md](./HYDRA_ARCHITECTURE.md) for the full technical diagram.
+
+```
+User Request
+     │
+     ▼
+┌─────────────────────────────────────────┐
+│           HEAD-1: hydra (Orchestrator)  │
+│  Analyzes request → selects heads       │
+└──────┬──────────┬────────────┬──────────┘
+       │          │            │
+       ▼          ▼            ▼
+  HEAD-2       HEAD-3       HEAD-4
+  MCP Select   Compress     Audit
+       │          │            │
+       └──────────┴────────────┘
+                  │
+       ┌──────────▼──────────┐
+       │   HEAD-5,6,7 Rules  │  ← Always active
+       │   Format/Guard/NoRep│
+       └──────────┬──────────┘
+                  │
+       ┌──────────▼──────────┐
+       │  HEAD-8: MCP Tracker│  ← Monitors usage
+       └──────────┬──────────┘
+                  │
+       ┌──────────▼──────────┐
+       │ HEAD-9: Agent Tmpl  │  ← Minimal footprint
+       └─────────────────────┘
+```
+
+---
+
+## 🧪 Examples
+
+### Example 1: Full HYDRA Mode Session
+See [examples/hydra_basic/](./examples/hydra_basic/)
+
+### Example 2: Smart MCP Selection
+See [examples/hydra_mcp_select/](./examples/hydra_mcp_select/)
+
+### Example 3: Context Compression Mid-Session
+See [examples/hydra_compress_demo/](./examples/hydra_compress_demo/)
+
+---
+
+## 🔬 How Each Head Works
+
+### HEAD-2: Smart MCP Selector
+Instead of loading ALL MCP tool definitions (which can consume thousands of tokens), `hydra_mcp` uses a **task-description analysis** to load only the servers relevant to the current work. Research shows this alone can reduce input tokens by up to **96%**.
+
+### HEAD-3: Context Compressor
+When a conversation grows long, the agent re-reads the entire history every turn. `hydra_compress` triggers a **semantic digest** — a condensed summary of key decisions, file paths, and current state — replacing raw history with a clean checkpoint.
+
+### HEAD-5–7: Rules Triangle
+The three HYDRA rules form a protective triangle:
+- **FORMAT** → output stays compact
+- **GUARD** → context doesn't balloon
+- **NO_REPEAT** → no wasted confirmations
+
+---
+
+## 📈 Token Budget Monitor
+
+The HYDRA system tracks your active customization budget. As seen in Antigravity IDE:
+- Rules consume ~4% budget
+- Skills consume ~2% budget  
+- HYDRA is designed to stay **under 6% total budget** for all 9 heads combined
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Each new "head" should:
+1. Target a specific token waste source
+2. Have a measurable savings metric
+3. Be non-breaking (optional activation)
+4. Include an example in `examples/`
+
+---
+
+## 📄 License
+
+MIT License — see [LICENSE](./LICENSE) for details.
+
+---
+
+## 🙏 Credits
+
+- Research sources: Reddit r/MachineLearning, Medium, machinelearningmastery.com, getmaxim.ai, stackone.com
+- Built for [Google Antigravity IDE](https://antigravity.google)
+- Inspired by the Hydra of Lerna — because token waste has many heads
+
+---
+
+<div align="center">
+
+**HYDRA TOKENS ANTIGRAVITY** — *Every token saved is a battle won.*
+
+Made with 🐍 by [@Mailor-Jorge](https://github.com/Mailor-Jorge)
+
+</div>

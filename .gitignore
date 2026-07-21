@@ -1,0 +1,23 @@
+# Logs and session files
+hydra_session_log.json
+.hydra_checkpoint.json
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.bak
+
+# Node (if any MCP tools are installed locally)
+node_modules/
+package-lock.json

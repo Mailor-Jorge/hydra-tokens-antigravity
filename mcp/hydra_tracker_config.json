@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "hydra-token-tracker": {
+      "comment": "HYDRA HEAD-8: Session token usage tracker with budget alerts",
+      "command": "npx",
+      "args": ["-y", "token-optimizer-mcp@latest", "run"],
+      "env": {
+        "ENABLE_TOKEN_TRACKING": "true",
+        "TOKEN_COST_PER_1K_INPUT": "0.003",
+        "TOKEN_COST_PER_1K_OUTPUT": "0.015",
+        "ALERT_THRESHOLD_TOKENS": "50000",
+        "ALERT_THRESHOLD_COST_USD": "0.50",
+        "SESSION_LOG_PATH": "./hydra_session_log.json",
+        "ENABLE_COMPRESSION_HINTS": "true",
+        "COMPRESS_TRIGGER_TOKENS": "15000"
+      }
+    }
+  },
+  "_hydra_notes": {
+    "description": "HYDRA HEAD-8 MCP Token Tracker configuration",
+    "usage": "Add this mcpServers block to your ~/.gemini/config/mcp_config.json",
+    "features": [
+      "Track input + output tokens per request",
+      "Cost estimation per session",
+      "Alert when context exceeds COMPRESS_TRIGGER_TOKENS",
+      "Alert when session cost exceeds ALERT_THRESHOLD_COST_USD",
+      "Session log for historical analysis"
+    ],
+    "optimization_tips": [
+      "Set COMPRESS_TRIGGER_TOKENS to 15000 for aggressive optimization",
+      "Set COMPRESS_TRIGGER_TOKENS to 30000 for balanced mode",
+      "Review SESSION_LOG_PATH daily to track trends",
+      "Use hydra audit to read the session log"
+    ]
+  }
+}
