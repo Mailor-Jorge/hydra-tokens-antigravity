@@ -1,5 +1,5 @@
 {
-  "name": "hydra-tools-mcp",
+  "name": "@mailor-jorge/hydra-tools-mcp",
   "version": "1.0.0",
   "description": "Official native MCP server for HYDRA TOKENS ANTIGRAVITY. Filters log files locally, estimates token costs, and manages workspace hygiene.",
   "main": "index.js",
@@ -8,6 +8,9 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

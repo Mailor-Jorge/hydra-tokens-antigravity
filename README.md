@@ -150,14 +150,14 @@ Run directly via natural language or MCP tool calls:
 
 ### 📦 Public MCP Package Installation
 
-You can run `hydra-tools-mcp` locally or register it in any MCP-compatible environment:
+You can run `@mailor-jorge/hydra-tools-mcp` locally or register it in any MCP-compatible environment:
 
 ```json
 {
   "mcpServers": {
     "hydra-tools-mcp": {
       "command": "npx",
-      "args": ["-y", "hydra-tools-mcp@latest"]
+      "args": ["-y", "@mailor-jorge/hydra-tools-mcp@latest"]
     }
   }
 }
