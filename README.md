@@ -5,8 +5,9 @@
 ![HYDRA Banner](https://img.shields.io/badge/HYDRA-TOKENS%20ANTIGRAVITY-6B21A8?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Google%20Antigravity-4F46E5?style=for-the-badge)
-![Version](https://img.shields.io/badge/Version-1.0.0-F59E0B?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.1.0-F59E0B?style=for-the-badge)
 ![Skills](https://img.shields.io/badge/Skills-4%20Heads-EC4899?style=for-the-badge)
+![MCP Tools](https://img.shields.io/badge/MCP%20Tools-6-06B6D4?style=for-the-badge)
 
 **A modular token-saving system for Google Antigravity IDE.**  
 *Cut AI API costs by up to 90% using Skills, Rules, Agents and MCP — the 9-headed HYDRA approach.*
@@ -128,23 +129,34 @@ After installation, **restart Antigravity IDE**. The 4 skills will appear in you
 | `hydra mcp [task]` | Runs **HEAD-2 Smart MCP Selector** (recommends minimal tools) |
 | `hydra compress`, `compactar contexto` | Forces **HEAD-3 Semantic Context Compression** immediately |
 | `hydra checkpoint` | Saves current session state to `.hydra_checkpoint.json` |
+| `hydra snippet [file] [sym]` | Extracts only a specific function/class from a file |
+| `hydra cache list/save/get` | Manages response cache (save, retrieve, list) |
+| `hydra snapshot [dir]` | Scans directory and reports token costs per file |
+| `hydra limit N` | Caps response output to ~N tokens |
+| `hydra limit off` | Removes output token limit |
+| `hydra diff on/off` | Toggles diff-only mode for file edits (default: ON) |
 
 ---
 
-### 🛠️ B. Native MCP Server Tools (`hydra-tools-mcp`)
+### 🛠️ B. Native MCP Server Tools (`hydra-tools-mcp`) — 6 Tools
 
 Run directly via natural language or MCP tool calls:
 
 | Tool | Parameters | Function & Savings |
 |------|------------|--------------------|
-| `hydra_filter_log` | `file_path`, `max_lines` | Filters large logs locally on your machine, returning only error lines (**saves up to 99.8% tokens**) |
-| `hydra_token_estimate` | `file_path` | Calculates exact byte size, char count, and estimated tokens **before** loading into context |
-| `hydra_clean_scratch` | `dry_run` | Scans and cleans up temporary `.tmp`, `.log`, `.bak` files from scratch workspace |
+| `hydra_filter_log` | `file_path`, `max_lines` | Filters large logs locally, returning only error lines (**-99.8% tokens**) |
+| `hydra_token_estimate` | `file_path` | Estimates tokens **before** loading into context |
+| `hydra_clean_scratch` | `dry_run` | Cleans `.tmp`, `.log`, `.bak` files from scratch workspace |
+| `hydra_snippet` | `file_path`, `symbol` | Extracts a single function/class from file (**-90% tokens**) |
+| `hydra_cache` | `action`, `key`, `value` | Saves/retrieves repeated responses (**-100% on repeats**) |
+| `hydra_context_snapshot` | `directory`, `max_depth` | Scans dir and reports token cost per file |
 
 #### Natural Language Examples:
-- *"Filter errors from `C:\logs\skyrim.log`"* → Calls `hydra_filter_log`
-- *"Estimate token cost of `src/main.py`"* → Calls `hydra_token_estimate`
-- *"Clean temporary scratch files"* → Calls `hydra_clean_scratch`
+- *"Filter errors from `skyrim.log`"* → `hydra_filter_log`
+- *"Estimate token cost of `main.py`"* → `hydra_token_estimate`
+- *"Extract function OnPageReset from MyMod.psc"* → `hydra_snippet`
+- *"Cache this response about compiling Papyrus"* → `hydra_cache`
+- *"Scan the project directory for heavy files"* → `hydra_context_snapshot`
 
 ---
 
