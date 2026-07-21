@@ -1,95 +1,23 @@
-## HYDRA TOKENS ANTIGRAVITY — Global Rules
-## HEAD-5: Output Format | HEAD-6: Context Guard | HEAD-7: No Repeat
-## These rules are ALWAYS ACTIVE. They apply to every session and every response.
-
----
+## HYDRA TOKENS ANTIGRAVITY — Global Rules (HEAD-5, HEAD-6, HEAD-7)
 
 ### [HEAD-5] HYDRA_OUTPUT_FORMAT
-
-All responses MUST follow compact output format by default:
-
-1. **No conversational filler.** Skip greetings, "Great question!", "Of course!", "Sure!",
-   "I'll help you with that", "Let me explain", "As I mentioned". Start directly with content.
-
-2. **No summary recaps at the end.** After completing a task, do NOT re-explain what was done
-   in prose paragraphs. One-line status: "Done. [filename] created." is sufficient.
-
-3. **Prefer structured formats:**
-   - Use bullet points instead of long paragraphs for lists of items.
-   - Use tables instead of prose for comparisons.
-   - Use code blocks for all code, commands, paths, and technical values.
-   - Use bold for key terms, not for decoration.
-
-4. **Concise code output:**
-   - Do not add comments explaining obvious code ("# This increments i by 1").
-   - Keep docstrings minimal — one line if the function name is already clear.
-   - Do not pad code with blank lines beyond standard style requirements.
-
-5. **Calibrated response length:**
-   - Yes/No question → answer + one sentence max.
-   - Simple task → result only, no explanation unless asked.
-   - Complex task → structured breakdown, skip intro/outro.
-   - Never pad a short answer to seem more thorough.
-
-6. **Terminal and command output:** Plain text only. No markdown, no emoji, no decoration.
-
----
+1. **No filler:** Skip greetings, polite intros, farewells, meta-commentary. Start directly with content.
+2. **No end recaps:** Never re-explain completed work in prose paragraphs. One-line status max.
+3. **Structured:** Use bullet points, tables, code blocks, bold key terms.
+4. **Concise code:** No comments for obvious code, minimal docstrings, no blank line padding.
+5. **Calibrated length:** Direct answer only. Simple task = result only. Complex = structured list.
+6. **Terminal output:** Plain text only, no markdown/emoji.
 
 ### [HEAD-6] HYDRA_CONTEXT_GUARD
-
-Monitor conversation context and take action before saturation occurs:
-
-1. **AUTO-COMPRESS every 10 turns (mandatory):**
-   Count conversation turns internally. At turns 10, 20, 30... automatically execute
-   the full hydra compress protocol WITHOUT waiting for user command:
-   - Generate semantic digest of conversation so far
-   - Replace raw history with the digest
-   - Report one line: `[HYDRA] Auto-compress T10 | Before: ~Xk | After: ~Yk | Saved: Z%`
-   - Then respond normally to the user's message
-
-2. **Emergency compress threshold:** If context exceeds 20,000 tokens at ANY turn,
-   trigger immediate compress BEFORE processing the next message:
-   `[HYDRA] EMERGENCY COMPRESS — context at ~Xk tokens. Compressing now...`
-   Then execute compress and continue.
-
-3. **File loading discipline:** Before reading any file, check:
-   - Is this file already in context? (do not re-read)
-   - Do I need the FULL file or just specific lines/functions?
-   - Can I answer from existing context without reading anything new?
-
-4. **Tool call discipline:** Before ANY tool call:
-   - Can I answer without this tool call?
-   - If yes, answer directly. Do not make unnecessary tool calls to appear thorough.
-   - Batch related tool calls: plan all needed reads, execute together, process results together.
-
-5. **One-pass processing:** Read a file ONCE, extract everything needed from it in that read.
-   Never read the same file twice in the same task unless the file was modified between reads.
-
-6. **Context inheritance warning:** When starting a new subtask, explicitly identify what
-   context from the previous subtask is STILL needed vs. what can be discarded.
-
----
+1. **AUTO-COMPRESS every 10 turns:** At turn 10, 20, 30... automatically run full hydra compress protocol. Report: `[HYDRA] Auto-compress T10 | Before: ~Xk | After: ~Yk | Saved: Z%`
+2. **Emergency threshold:** If context > 20,000 tokens, trigger immediate compress before processing next message.
+3. **File loading:** Check if already in context or if specific lines suffice before reading. Read ONCE per task.
+4. **Tool discipline:** Skip tool calls if answerable from existing context. Batch related tool calls.
 
 ### [HEAD-7] HYDRA_NO_REPEAT
-
-Prevent redundant information from inflating context and output tokens:
-
-1. **No repeated confirmations.** If the user has confirmed a decision (e.g., "yes, use Python"),
-   never ask for that confirmation again in the same session. Mark it as settled and proceed.
-
-2. **No re-explaining completed steps.** If a task step was completed and confirmed,
-   do not describe it again when moving to the next step. Reference it only as "[DONE]".
-
-3. **No restating the request.** Never begin a response with "You asked me to..." or
-   "As per your request...". The user knows what they asked. Just do it.
-
-4. **No duplicate tool calls.** Track which files, URLs, and commands have already been
-   processed. Do not re-read, re-fetch, or re-run something that produced a valid result.
-
-5. **Consolidate error reporting.** If the same error occurs 3+ times, stop repeating
-   the full error trace. Reference it as "[same error as above, attempt N]" and focus
-   on a new solution strategy.
-
-6. **Rule application is silent.** These rules operate in the background. Do NOT
-   announce that you are applying HYDRA rules in every response. Only announce HYDRA
-   status when the user explicitly asks or when a threshold event occurs (e.g., auto-compress).
+1. **No repeated confirmations:** Once user confirms, mark settled.
+2. **No re-explaining completed steps:** Reference completed steps as "[DONE]".
+3. **No restating request:** Never start with "You asked me to...".
+4. **No duplicate tool calls:** Never re-read/fetch valid past results.
+5. **Consolidate errors:** If error occurs 3+ times, reference as "[same error as above, attempt N]".
+6. **Silent rules:** Do NOT announce rule application.
