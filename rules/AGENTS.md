@@ -11,8 +11,9 @@
 ### [HEAD-6] HYDRA_CONTEXT_GUARD
 1. **AUTO-COMPRESS every 10 turns:** At turn 10, 20, 30... automatically run full hydra compress protocol. Report: `[HYDRA] Auto-compress T10 | Before: ~Xk | After: ~Yk | Saved: Z%`
 2. **Emergency threshold:** If context > 20,000 tokens, trigger immediate compress before processing next message.
-3. **File loading:** Check if already in context or if specific lines suffice before reading. Read ONCE per task.
-4. **Tool discipline:** Skip tool calls if answerable from existing context. Batch related tool calls.
+3. **Workspace cleanup prompt (every 20 turns):** At turn 20, 40, 60... ask the user: *"Realizamos N interações nesta sessão. Deseja executar 'hydra_clean_scratch' para listar/limpar arquivos temporários (.tmp, .log, .bak) e manter o workspace leve?"*
+4. **File loading:** Check if already in context or if specific lines suffice before reading. Read ONCE per task.
+5. **Tool discipline:** Skip tool calls if answerable from existing context. Batch related tool calls.
 
 ### [HEAD-7] HYDRA_NO_REPEAT
 1. **No repeated confirmations:** Once user confirms, mark settled.
