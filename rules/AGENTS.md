@@ -21,6 +21,7 @@
 9. **Dependency trace prompt:** Before editing a function/symbol, ask: *"Vou editar '[symbol]'. Deseja executar 'hydra_dependency_trace' para verificar quem depende desta função antes de alterar?"*
 10. **Edit verify prompt:** After editing any file, ask: *"Editei '[filename]'. Deseja executar 'hydra_edit_verify' para checar se há erros de sintaxe?"*
 11. **File hash check:** Before re-reading a file already in context, ask: *"Deseja verificar via 'hydra_file_hash' se '[filename]' mudou antes de reler (~X tokens)?"*
+12. **Automatic Task Watchdog (5-Minute Maximum Limit):** Monitor running background tasks and subagents at every turn. If ANY task or subagent is running for **> 5 minutes** (300 seconds), automatically kill/cancel it via `manage_task(Action='kill')` or `manage_subagents(Action='kill')` to save hardware resources and context. Report to the user with task ID, tool/role, description, and execution duration.
 
 ### [HEAD-7] HYDRA_NO_REPEAT
 1. **No repeated confirmations:** Once user confirms, mark settled.

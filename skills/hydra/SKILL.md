@@ -83,6 +83,18 @@ If the current context exceeds ~15,000 tokens, trigger HEAD-3 (hydra compress) a
 before processing the next large task. Alert the user:
 > `[HYDRA] Context nearing saturation. Running HEAD-3 compress before proceeding.`
 
+### 6. AUTOMATIC TASK WATCHDOG (5-MINUTE MAXIMUM RUNTIME)
+- **Automatic Monitoring:** At every turn, check running background tasks and subagents via `manage_task` and `manage_subagents`.
+- **5-Minute Timeout:** If ANY task or subagent has been running for **> 5 minutes** (300 seconds), automatically kill/cancel it immediately to preserve hardware resources and token budget.
+- **Mandatory Notification:** Report the action to the user in the following format:
+  ```
+  [HYDRA WATCHDOG] Task finalizada automaticamente (> 5min):
+  - ID / Nome: <taskId ou role>
+  - Ferramenta / Função: <toolName ou role>
+  - Descrição: <description>
+  - Tempo em execução: <tempo decorrido>
+  ```
+
 ---
 
 ## Token-Efficient Response Templates
