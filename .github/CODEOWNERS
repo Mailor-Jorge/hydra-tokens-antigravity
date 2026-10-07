@@ -1,0 +1,23 @@
+# CODEOWNERS for HYDRA TOKENS ANTIGRAVITY
+
+# Global Default Owner
+* @Mailor-Jorge
+
+# Critical Legal & Governance Files
+/LICENSE @Mailor-Jorge
+/NOTICE @Mailor-Jorge
+/TRADEMARKS.md @Mailor-Jorge
+/CLA.md @Mailor-Jorge
+/CCLA.md @Mailor-Jorge
+/COMMERCIAL-LICENSING.md @Mailor-Jorge
+/GOVERNANCE.md @Mailor-Jorge
+/SECURITY.md @Mailor-Jorge
+/RELEASING.md @Mailor-Jorge
+/AUTHORS @Mailor-Jorge
+/PROOF-OF-AUTHORSHIP.txt @Mailor-Jorge
+
+# Governance & Branding Directories
+/docs/governance/ @Mailor-Jorge
+/docs/branding/ @Mailor-Jorge
+/.github/ @Mailor-Jorge
+/sbom/ @Mailor-Jorge

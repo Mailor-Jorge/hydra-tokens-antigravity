@@ -3,7 +3,8 @@
 <div align="center">
 
 ![HYDRA Banner](https://img.shields.io/badge/HYDRA-TOKENS%20ANTIGRAVITY-6B21A8?style=for-the-badge&logo=googlegemini&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
+![License](https://img.shields.io/badge/License-AGPL--3.0-22C55E?style=for-the-badge)
+![Dual License](https://img.shields.io/badge/Dual--Licensing-Commercial%20%7C%20OEM-blue?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Google%20Antigravity-4F46E5?style=for-the-badge)
 ![Version](https://img.shields.io/badge/Version-1.2.0-F59E0B?style=for-the-badge)
 ![Skills](https://img.shields.io/badge/Skills-4%20Heads-EC4899?style=for-the-badge)
@@ -289,9 +290,14 @@ Contributions welcome! Each new "head" should:
 
 ---
 
-## 📄 License
+## 📄 Licensing & Governance
 
-MIT License — see [LICENSE](./LICENSE) for details.
+This project is dual-licensed:
+- **Open-Source Track:** GNU Affero General Public License v3.0 ([AGPL-3.0-only](./LICENSE)).
+- **Commercial Track:** Proprietary / OEM / Enterprise licensing available for commercial applications wishing to be exempt from copyleft obligations ([COMMERCIAL-LICENSING.md](./COMMERCIAL-LICENSING.md)).
+
+See also:
+- [NOTICE](./NOTICE) · [TRADEMARKS.md](./TRADEMARKS.md) · [GOVERNANCE.md](./GOVERNANCE.md) · [CLA.md](./CLA.md)
 
 ---
 

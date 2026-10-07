@@ -1,0 +1,186 @@
+[
+  {
+    "path": "LICENSE",
+    "status": "CREATED",
+    "sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+    "size": 34523,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "NOTICE",
+    "status": "CREATED",
+    "sha256": "2191f44fc36a4115682f61969784495ba455593b6853d3a4e4523444dcc0609a",
+    "size": 801,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "AUTHORS",
+    "status": "CREATED",
+    "sha256": "244dcc3d8d3c2d90a54ac6e6dc12b4aeb886d20f81e3fef4e4ed5f2c82f89194",
+    "size": 459,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "CLA.md",
+    "status": "CREATED",
+    "sha256": "9c254165d60608d4fceb0b04537d0d42be9f718e42c18c062f18fc2f93e128e5",
+    "size": 2551,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "CCLA.md",
+    "status": "CREATED",
+    "sha256": "9b3cd76186847953b5f777afaac05d504c554aef58faa47e79eb609d34f3bd28",
+    "size": 1245,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "TRADEMARKS.md",
+    "status": "CREATED",
+    "sha256": "4f68d270d30700cc8c50b222ecbe27475971e8309bc9cdd5f169f59c37c972ea",
+    "size": 1390,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "COMMERCIAL-LICENSING.md",
+    "status": "CREATED",
+    "sha256": "50620b5f249412fc02c46295ea6c654c15b6b9d74507daecca2282a86e06f47f",
+    "size": 2425,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "GOVERNANCE.md",
+    "status": "CREATED",
+    "sha256": "c4a1cad19e0e344ade6f4957caaa601d82096dc19d898f696fb4c1108e16bea0",
+    "size": 1413,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "CONTRIBUTING.md",
+    "status": "CREATED",
+    "sha256": "404ba00714ba5a3afb74d4c064ffbb67c73d50c02f2135bfafa52a74e422f373",
+    "size": 743,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "SECURITY.md",
+    "status": "CREATED",
+    "sha256": "ca5f7bcfbf6689a4fa50c1de2ce124c86203d93fe24307add9e105b03e4617fe",
+    "size": 738,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "SUPPORT.md",
+    "status": "CREATED",
+    "sha256": "954fa44744d2010169dc2c8be479c19425503c1b6e1bb98a3c711e40643b18a6",
+    "size": 665,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "CODE_OF_CONDUCT.md",
+    "status": "CREATED",
+    "sha256": "7a960d3987f4d44d27b7d044675ef09f49811d8c086aa0ac58bf0beefbdec499",
+    "size": 1926,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "RELEASING.md",
+    "status": "CREATED",
+    "sha256": "b038cf1641b363bd4a4117ff6be97319c10906c8db10ffb1fa383edbf3040df8",
+    "size": 1045,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "THIRD_PARTY_NOTICES.md",
+    "status": "CREATED",
+    "sha256": "6f65b85060b7c09f627d85f4728ccd4f5d9a15fe2ae7f0261565e9a64a359926",
+    "size": 795,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "PROOF-OF-AUTHORSHIP.txt",
+    "status": "CREATED",
+    "sha256": "9b57f6f21328be5decab9944e0b2d2387e7f147abedcbea98303c21d953d9a08",
+    "size": 1666,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": ".github/CODEOWNERS",
+    "status": "CREATED",
+    "sha256": "3f2782a95e6570ef3af77dec52bd6277d6a34b0dcd4bbaa988288d590645fb58",
+    "size": 567,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": ".github/PULL_REQUEST_TEMPLATE.md",
+    "status": "CREATED",
+    "sha256": "923953e775125c2bac5005018cd8788284ff44f66157052c592b012549b44f96",
+    "size": 534,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "docs/branding/BRAND-GUIDELINES.md",
+    "status": "CREATED",
+    "sha256": "8ad9f7bc685c4aee566b1adb583cbad5bec66eafc546ac2c0c29d0ebd729e57b",
+    "size": 466,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "docs/branding/LOGO-BRIEF.md",
+    "status": "CREATED",
+    "sha256": "e86ced581c4f75e3dbe769c9264d0993b459231f256f21289e28ec74b0171fc4",
+    "size": 562,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "docs/governance/AGPL-NETWORK-COMPLIANCE.md",
+    "status": "CREATED",
+    "sha256": "10ae9d6c11a903997569789a6b90d54eaba2e267099d97ed54d08ccb0b6d01bf",
+    "size": 1241,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "docs/governance/COPYRIGHT-MATRIX.md",
+    "status": "CREATED",
+    "sha256": "72685b5415523d11983f21fb07269c25cba8f426b98e7060a2683c8c3f88082e",
+    "size": 1413,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "docs/governance/REPOSITORY-CONTROLS.md",
+    "status": "CREATED",
+    "sha256": "a05f8da7337f4622a10d71decfb20e03fd6518d7f86fb6f221893825a7f931a3",
+    "size": 770,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  },
+  {
+    "path": "sbom/hydra-sbom-spdx.json",
+    "status": "CREATED",
+    "sha256": "02e4b910ec0bbf5b2beda7a1430999b9e255d43ab32acf41844ab27b0d3be9d2",
+    "size": 1261,
+    "purpose": "Institutional Governance & Legal Hardening",
+    "control_family": "LEGAL-DEVSECOPS"
+  }
+]

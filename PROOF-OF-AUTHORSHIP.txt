@@ -1,0 +1,26 @@
+The cryptographic digest establishes integrity of the captured artifact relative to the recorded digest. It does not independently establish legal authorship or provide a trusted third-party timestamp.
+
+================================================================================
+INSTITUTIONAL REPOSITORY FORENSIC BASELINE RECORD
+================================================================================
+Project:                     HYDRA TOKENS ANTIGRAVITY
+Repository:                  Mailor-Jorge/hydra-tokens-antigravity
+Forensic Baseline ID:        hydra-tokens-antigravity-20261007T050815Z-b6e7ddf
+Baseline Git HEAD:           b6e7ddfa09966ca5d8948e906e6d91fec5744a99
+Capture Timestamp (UTC):     2026-10-07T05:08:15Z
+
+FORENSIC EVIDENCE ARTIFACT
+Artifact Path:               .evidence/hydra-tokens-antigravity-baseline.bundle
+Artifact Size (Bytes):       64645
+Artifact SHA-256 Digest:     BC966EECB495403EC48F825AFF44CE3D60EB5FBEEACE50823D578CF0BD7EB7B8
+Bundle Verification Status:  VERIFIED (git bundle verify passed with all refs intact)
+
+PRIMARY AUTHORSHIP RECORD (GIT COMMIT EVIDENCE)
+Author / Committer:          Mailor-Jorge <maijor.mesquita@gmail.com>
+Total Historical Commits:    19
+First Commit SHA:            e06a85109cdd5966a63ab2698df8159fc8ad891f
+Baseline Commit SHA:         b6e7ddfa09966ca5d8948e906e6d91fec5744a99
+
+LEGAL DISCLAIMER:
+This document records cryptographic and technical state of the Git repository at the baseline commit. Hash integrity alone does not substitute for qualified statutory legal counsel or official trademark registration.
+================================================================================

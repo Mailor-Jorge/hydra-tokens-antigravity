@@ -3,6 +3,10 @@ hydra_session_log.json
 .hydra_checkpoint.json
 *.log
 
+# Forensic artifacts (Protocol Section 33)
+.evidence/
+*.bundle
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -21,3 +25,6 @@ desktop.ini
 # Node (if any MCP tools are installed locally)
 node_modules/
 package-lock.json
+
+__pycache__/
+*.pyc

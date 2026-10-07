@@ -1,0 +1,36 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "HYDRA-TOKENS-ANTIGRAVITY-SBOM",
+  "documentNamespace": "https://github.com/Mailor-Jorge/hydra-tokens-antigravity/spdx/sbom-v1.2.0",
+  "creationInfo": {
+    "created": "2026-10-07T05:15:00Z",
+    "creators": [
+      "Tool: HYDRA-Institutional-Governance-Agent-1.0",
+      "Person: Mailor-Jorge (maijor.mesquita@gmail.com)"
+    ]
+  },
+  "packages": [
+    {
+      "name": "hydra-tokens-antigravity",
+      "SPDXID": "SPDXRef-Package-Core",
+      "versionInfo": "1.2.0",
+      "downloadLocation": "git+https://github.com/Mailor-Jorge/hydra-tokens-antigravity.git",
+      "packageSupplier": "Person: Mailor-Jorge",
+      "declaredLicense": "AGPL-3.0-only",
+      "concludedLicense": "AGPL-3.0-only",
+      "copyrightText": "Copyright 2026 Mailor-Jorge"
+    },
+    {
+      "name": "@mailoko/hydra-tools-mcp",
+      "SPDXID": "SPDXRef-Package-NPM-MCP",
+      "versionInfo": "1.2.0",
+      "downloadLocation": "https://registry.npmjs.org/@mailoko/hydra-tools-mcp/-/hydra-tools-mcp-1.2.0.tgz",
+      "packageSupplier": "Person: Mailor-Jorge",
+      "declaredLicense": "MIT",
+      "concludedLicense": "MIT",
+      "copyrightText": "Copyright 2026 Mailoko"
+    }
+  ]
+}

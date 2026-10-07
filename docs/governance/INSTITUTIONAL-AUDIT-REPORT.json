@@ -1,0 +1,33 @@
+{
+  "auditMetadata": {
+    "protocol": "Master Institutional Repository Governance Protocol",
+    "timestamp": "2026-10-07T05:15:00Z",
+    "auditor": "Principal Software & LegalTech Governance Agent"
+  },
+  "project": {
+    "name": "HYDRA TOKENS ANTIGRAVITY",
+    "repository": "Mailor-Jorge/hydra-tokens-antigravity",
+    "founder": "Mailor-Jorge",
+    "legalContact": "maijor.mesquita@gmail.com"
+  },
+  "licensing": {
+    "openSource": "AGPL-3.0-only",
+    "dualLicensing": true,
+    "commercialLicensing": true,
+    "oemLicensing": true
+  },
+  "forensics": {
+    "baselineSha": "b6e7ddfa09966ca5d8948e906e6d91fec5744a99",
+    "bundleFile": ".evidence/hydra-tokens-antigravity-baseline.bundle",
+    "bundleSha256": "BC966EECB495403EC48F825AFF44CE3D60EB5FBEEACE50823D578CF0BD7EB7B8",
+    "bundleVerified": true
+  },
+  "governance": {
+    "claRequired": true,
+    "cclaRequired": true,
+    "codeownersEnforced": true,
+    "spdxSbomPresent": true
+  },
+  "releaseDecision": "GO",
+  "institutionalizationStatus": "COMPLETE"
+}
