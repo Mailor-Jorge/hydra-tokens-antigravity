@@ -3,7 +3,7 @@
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Cyan
-Write-Host "  HYDRA TOKENS ANTIGRAVITY — Installer v1.0" -ForegroundColor Cyan
+Write-Host "  HYDRA TOKENS ANTIGRAVITY -- Installer v1.2" -ForegroundColor Cyan
 Write-Host "  9-Headed Token Economy System for Antigravity IDE" -ForegroundColor Cyan
 Write-Host "======================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -19,7 +19,7 @@ if (-not (Test-Path $configPath)) {
     exit 1
 }
 
-Write-Host "[1/4] Installing HYDRA Skills..." -ForegroundColor Yellow
+Write-Host "[1/5] Installing HYDRA Skills..." -ForegroundColor Yellow
 
 $skills = @("hydra", "hydra_mcp", "hydra_compress", "hydra_audit")
 foreach ($skill in $skills) {
@@ -35,7 +35,7 @@ foreach ($skill in $skills) {
 }
 
 Write-Host ""
-Write-Host "[2/4] Installing HYDRA Rules to AGENTS.md..." -ForegroundColor Yellow
+Write-Host "[2/5] Installing HYDRA Rules to AGENTS.md..." -ForegroundColor Yellow
 
 if (-not (Test-Path $agentsPath)) {
     New-Item -ItemType File -Path $agentsPath -Force | Out-Null
@@ -49,14 +49,22 @@ if ($rulesContent) {
         Write-Host "  [SKIP] HYDRA rules already present in AGENTS.md" -ForegroundColor DarkYellow
     } else {
         Add-Content -Path $agentsPath -Value "`n`n$rulesContent"
-        Write-Host "  [OK] HYDRA rules (HEAD-5, HEAD-6, HEAD-7) added" -ForegroundColor Green
+        Write-Host "  [OK] HYDRA rules added to AGENTS.md" -ForegroundColor Green
     }
 } else {
     Write-Host "  [WARN] rules\AGENTS.md not found" -ForegroundColor DarkYellow
 }
 
 Write-Host ""
-Write-Host "[3/4] Verifying Installation..." -ForegroundColor Yellow
+Write-Host "[3/5] Activating HYDRA MCP Tools in Antigravity Panel..." -ForegroundColor Yellow
+if (Test-Path ".\activate_hydra_mcp.ps1") {
+    powershell -ExecutionPolicy Bypass -File ".\activate_hydra_mcp.ps1"
+} else {
+    Write-Host "  [WARN] activate_hydra_mcp.ps1 script not found" -ForegroundColor Yellow
+}
+
+Write-Host ""
+Write-Host "[4/5] Verifying Installation..." -ForegroundColor Yellow
 
 $installed = 0
 foreach ($skill in $skills) {
@@ -70,10 +78,10 @@ foreach ($skill in $skills) {
 }
 
 Write-Host ""
-Write-Host "[4/4] Installation Summary" -ForegroundColor Yellow
+Write-Host "[5/5] Installation Summary" -ForegroundColor Yellow
 Write-Host "  Skills installed : $installed / 4" -ForegroundColor White
 Write-Host "  Rules installed  : HEAD-5, HEAD-6, HEAD-7" -ForegroundColor White
-Write-Host "  MCP tracker      : Manual install required (see mcp\hydra_tracker_config.json)" -ForegroundColor White
+Write-Host "  MCP Tools Status : AUTO-ACTIVATED (hydra-tools-mcp in mcp_config.json)" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Cyan

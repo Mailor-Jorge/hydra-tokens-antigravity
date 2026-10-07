@@ -9,59 +9,20 @@ git clone https://github.com/Mailor-Jorge/hydra-tokens-antigravity.git
 cd hydra-tokens-antigravity
 ```
 
-### Step 2: Run the Installer
+### Step 2: Run the Installer (Auto-installs Skills, Rules & MCP Tools)
 
 ```powershell
-.\install.ps1
+powershell -ExecutionPolicy Bypass -File .\install.ps1
 ```
 
-### Step 3: Restart Antigravity IDE
+> **Note:** `install.ps1` automatically executes `activate_hydra_mcp.ps1` to register `hydra-tools-mcp` inside your `mcp_config.json` and enable all 9 native HYDRA tools in the Antigravity panel!
 
-Close and reopen Antigravity IDE. The 4 HYDRA skills will appear in your
-**Customizations → Skills** panel.
+### Step 3: Standalone MCP Activation (Optional)
 
----
-
-## Manual Installation
-
-### Install Skills (4 heads)
+If you ever need to re-activate or update the HYDRA MCP tools in your panel, run:
 
 ```powershell
-# Navigate to project folder
-cd hydra-tokens-antigravity
-
-# Copy all 4 HYDRA skills to Antigravity config
-Copy-Item -Recurse skills\hydra     "$env:USERPROFILE\.gemini\config\skills\hydra" -Force
-Copy-Item -Recurse skills\hydra_mcp "$env:USERPROFILE\.gemini\config\skills\hydra_mcp" -Force
-Copy-Item -Recurse skills\hydra_compress "$env:USERPROFILE\.gemini\config\skills\hydra_compress" -Force
-Copy-Item -Recurse skills\hydra_audit   "$env:USERPROFILE\.gemini\config\skills\hydra_audit" -Force
-```
-
-### Install Rules (3 heads)
-
-```powershell
-# Check if AGENTS.md exists; create it if not
-$agentsPath = "$env:USERPROFILE\.gemini\config\AGENTS.md"
-if (-not (Test-Path $agentsPath)) {
-    New-Item -ItemType File -Path $agentsPath -Force
-}
-
-# Append HYDRA rules to your existing AGENTS.md
-Add-Content -Path $agentsPath -Value "`n`n"
-Add-Content -Path $agentsPath -Value (Get-Content rules\AGENTS.md -Raw)
-Write-Host "HYDRA rules added to AGENTS.md"
-```
-
-### Install MCP Token Tracker (optional, HEAD-8)
-
-```powershell
-# View your current MCP config
-Get-Content "$env:USERPROFILE\.gemini\config\mcp_config.json"
-
-# Merge the HYDRA tracker config
-# (manually copy the 'hydra-token-tracker' block from mcp\hydra_tracker_config.json
-#  into your mcp_config.json under the 'mcpServers' object)
-notepad "$env:USERPROFILE\.gemini\config\mcp_config.json"
+powershell -ExecutionPolicy Bypass -File .\activate_hydra_mcp.ps1
 ```
 
 ---
